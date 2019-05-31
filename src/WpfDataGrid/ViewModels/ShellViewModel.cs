@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Caliburn.Micro;
-using Caliburn.PresentationFramework;
+using System.Threading;
 
 namespace WpfDataGrid.ViewModels
 {
     public class ShellViewModel : Caliburn.Micro.PropertyChangedBase
     {
 
-        private readonly HttpHandler _httpHandler = new HttpHandler();
         private string _bondList;
+        private string _excuteStatus;
 
         public Caliburn.Micro.BindableCollection<BasicInfo> Fund { get; set; }
 
@@ -29,6 +22,16 @@ namespace WpfDataGrid.ViewModels
             }
         }
 
+        public string ExcuteStatus
+        {
+            get => _excuteStatus;
+            set
+            {
+                _excuteStatus = value;
+                NotifyOfPropertyChange(() => ExcuteStatus);
+            }
+        }
+
         public ShellViewModel()
         {
             Fund = new Caliburn.Micro.BindableCollection<BasicInfo>();
@@ -36,16 +39,20 @@ namespace WpfDataGrid.ViewModels
 
         public void SearchButtonClick()
         {
-            List<string> listSource = GetBondList(BondListString);
-            List<BasicInfo> targetList = _httpHandler.SimulateExampleList(listSource);
-            RefreshDataGrid(targetList);
+            var t = new Thread(() => RunFunction());
+            t.Start();
         }
 
         private void RunFunction()
         {
+            ExcuteStatus = "Running";
+
+            var httpHandler = new HttpHandler();
             List<string> listSource = GetBondList(BondListString);
-            List<BasicInfo> targetList = _httpHandler.SimulateExampleList(listSource);
-            RefreshDataGrid(targetList);
+            List<BasicInfo> listTarget = httpHandler.SimulateExampleList(listSource);
+            RefreshDataGrid(listTarget);
+
+            ExcuteStatus = "Ready";
         }
 
         private List<string> GetBondList(string stringSource)
