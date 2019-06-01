@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace WpfDataGrid.ViewModels
 {
@@ -48,9 +49,21 @@ namespace WpfDataGrid.ViewModels
             ExcuteStatus = "Running";
 
             var httpHandler = new HttpHandler();
+            var listResult = new List<BasicInfo>();
+
             List<string> listSource = GetBondList(BondListString);
-            List<BasicInfo> listTarget = httpHandler.SimulateExampleList(listSource);
-            RefreshDataGrid(listTarget);
+            var taskList = new List<Task>();
+
+            foreach (var bondCode in listSource)
+            {
+                var currTask = Task.Factory.StartNew(
+                    ()=> httpHandler.StoreCurrentFundInfo(bondCode, ref listResult));
+                taskList.Add(currTask);
+            }
+
+            Task.WaitAll(taskList.ToArray());
+
+            RefreshDataGrid(listResult);
 
             ExcuteStatus = "Ready";
         }

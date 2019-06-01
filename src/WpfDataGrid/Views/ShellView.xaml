@@ -18,9 +18,9 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Margin="10" FontSize="20" Text="Bond Code:"/>
-                    <TextBox Text="{Binding BondListString}" Grid.Column="1" Margin="10" FontSize="16" FontWeight="Bold" />
-                    <Button x:Name = "SearchButtonClick" Grid.Column="2"  FontSize="16" Margin="10">Search</Button>
+                    <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Bond Code:"/>
+                    <TextBox Text="{Binding BondListString}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
+                    <Button x:Name = "SearchButtonClick" Grid.Column="2"  FontSize="15" Margin="10">Search</Button>
                 </Grid>
 
                 <Grid>

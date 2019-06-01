@@ -7,7 +7,14 @@ namespace WpfDataGrid
 {
     public class HttpHandler
     {
-        public T GetRequestObject<T>(string url)
+        public void StoreCurrentFundInfo(string bpndCode, ref List<BasicInfo> listObj)
+        {
+            var url = $"http://fundgz.1234567.com.cn/js/{bpndCode}.js?rt=1463558676006";
+            var objResult = GetRequestObject<BasicInfo>(url);
+            listObj.Add(objResult);
+        }
+
+        private T GetRequestObject<T>(string url)
         {
             var jsonString = string.Empty;
             var requestObjGet = WebRequest.Create(url);
@@ -19,7 +26,7 @@ namespace WpfDataGrid
                 jsonString = streamReader.ReadToEnd();
             }
 
-            return  JsonConvert.DeserializeObject<T>(ModifyJsonFormat(jsonString));
+            return JsonConvert.DeserializeObject<T>(ModifyJsonFormat(jsonString));
         }
 
         private string ModifyJsonFormat(string strJason)
@@ -29,19 +36,5 @@ namespace WpfDataGrid
             return strJason.Substring(startIndex + 1, endIndex - startIndex - 1);
         }
 
-        public List<BasicInfo> SimulateExampleList( List<string> listSource)
-        {
-            var httpHandler = new HttpHandler();
-            var listTarget = new List<BasicInfo>();
-
-            foreach (var item in listSource)
-            {
-                var url = $"http://fundgz.1234567.com.cn/js/{item}.js?rt=1463558676006";
-                var resultList = httpHandler.GetRequestObject<BasicInfo>(url);
-                listTarget.Add(resultList);
-            }
-
-            return listTarget;
-        }
     }
 }
