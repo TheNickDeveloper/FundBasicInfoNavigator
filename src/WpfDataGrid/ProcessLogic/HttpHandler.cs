@@ -20,7 +20,7 @@ namespace WpfDataGrid
             var requestObjGet = WebRequest.Create(url);
 
             using (HttpWebResponse webReponseObjGet = (HttpWebResponse)requestObjGet.GetResponse())
-            using (var stream = webReponseObjGet.GetResponseStream())
+            using (Stream stream = webReponseObjGet.GetResponseStream())
             using (StreamReader streamReader = new StreamReader(stream))
             {
                 jsonString = streamReader.ReadToEnd();
