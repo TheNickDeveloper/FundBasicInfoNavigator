@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfDataGrid.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="484.8" Width="700" WindowStartupLocation="CenterScreen" >
+        Title="ShellView" Height="590" Width="700" WindowStartupLocation="CenterScreen" >
 
     <Grid>
         <Border Padding="10">
@@ -34,7 +34,7 @@
 
                 <Grid>
                     <ScrollViewer  VerticalScrollBarVisibility="Auto" Height="Auto">
-                        <DataGrid Height="300" x:Name="Fund" AlternatingRowBackground="Gold" CanUserAddRows="False" AutoGenerateColumns="False"  >
+                        <DataGrid Height="200" x:Name="Fund" AlternatingRowBackground="Gold" CanUserAddRows="False" AutoGenerateColumns="False"  >
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="FundCode" Binding="{Binding Path=FundCode}"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
@@ -46,6 +46,12 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </ScrollViewer >
+                </Grid>
+
+                <TextBlock Grid.Row="1" Margin="10 10 10 10" FontSize="15" Text="Log Messages"/>
+
+                <Grid>
+                    <ListBox Height="170" ItemsSource="{Binding LogMessage}"/>
                 </Grid>
             </StackPanel>
         </Border>

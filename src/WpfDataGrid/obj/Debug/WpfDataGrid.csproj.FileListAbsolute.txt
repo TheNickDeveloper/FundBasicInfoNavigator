@@ -85,3 +85,16 @@ C:\Users\32355\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\Debug
 C:\Users\32355\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\Debug\WpfDataGrid.csproj.CopyComplete
 C:\Users\32355\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\Debug\WpfDataGrid.exe
 C:\Users\32355\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\Debug\WpfDataGrid.pdb
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.abstractions.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.runner.visualstudio.testadapter.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.runner.reporters.net452.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.runner.utility.net452.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.assert.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.core.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.execution.desktop.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.assert.xml
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.core.xml
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\xunit.execution.desktop.xml
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\FluentValidation.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\System.ComponentModel.Annotations.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\bin\Debug\FluentValidation.xml

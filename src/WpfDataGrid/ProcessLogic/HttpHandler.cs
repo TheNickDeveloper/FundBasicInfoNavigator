@@ -7,26 +7,47 @@ namespace WpfDataGrid
 {
     public class HttpHandler
     {
+        public List<string> LogList { get; set; } = new List<string>();
+
         public void StoreCurrentFundInfo(string bpndCode, ref List<BasicInfo> listObj)
         {
             var url = $"http://fundgz.1234567.com.cn/js/{bpndCode}.js?rt=1463558676006";
-            var objResult = GetRequestObject<BasicInfo>(url);
+            var contents = GetStreamReaderContents(url);
+            var objResult = new BasicInfo();
+
+            if ( !string.IsNullOrEmpty(contents))
+            {
+                objResult = JsonConvert.DeserializeObject<BasicInfo>(ModifyJsonFormat(contents));
+                LogList.Add($"Bond Code: {bpndCode} success.");
+            }
+            else
+            {
+                objResult.FundCode = bpndCode;
+                objResult.Name = "No Found";
+                LogList.Add($"Bond Code: {bpndCode} no found.");
+            }
+
             listObj.Add(objResult);
         }
 
-        private T GetRequestObject<T>(string url)
+        public string GetStreamReaderContents(string url)
         {
-            var jsonString = string.Empty;
             var requestObjGet = WebRequest.Create(url);
 
-            using (HttpWebResponse webReponseObjGet = (HttpWebResponse)requestObjGet.GetResponse())
-            using (Stream stream = webReponseObjGet.GetResponseStream())
-            using (StreamReader streamReader = new StreamReader(stream))
+            try
             {
-                jsonString = streamReader.ReadToEnd();
+                using (HttpWebResponse webReponseObjGet = (HttpWebResponse)requestObjGet.GetResponse())
+                using (Stream stream = webReponseObjGet.GetResponseStream())
+                using (StreamReader streamReader = new StreamReader(stream))
+                {
+                    return streamReader?.ReadToEnd();
+                }
             }
+            catch (System.Exception)
+            {
 
-            return JsonConvert.DeserializeObject<T>(ModifyJsonFormat(jsonString));
+                return string.Empty;
+            }
         }
 
         private string ModifyJsonFormat(string strJason)

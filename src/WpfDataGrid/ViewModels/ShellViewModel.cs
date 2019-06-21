@@ -10,6 +10,7 @@ namespace WpfDataGrid.ViewModels
 
         private string _bondList;
         private string _excuteStatus;
+        private List<string> _errorLog;
 
         public Caliburn.Micro.BindableCollection<BasicInfo> Fund { get; set; }
 
@@ -30,6 +31,16 @@ namespace WpfDataGrid.ViewModels
             {
                 _excuteStatus = value;
                 NotifyOfPropertyChange(() => ExcuteStatus);
+            }
+        }
+
+        public List<string> LogMessage
+        {
+            get => _errorLog;
+            set
+            {
+                _errorLog = value;
+                NotifyOfPropertyChange(() => LogMessage);
             }
         }
 
@@ -58,12 +69,15 @@ namespace WpfDataGrid.ViewModels
             {
                 var currTask = Task.Factory.StartNew(
                     ()=> httpHandler.StoreCurrentFundInfo(bondCode, ref listResult));
+
                 taskList.Add(currTask);
             }
 
             Task.WaitAll(taskList.ToArray());
 
             RefreshDataGrid(listResult);
+
+            LogMessage = httpHandler.LogList;
 
             ExcuteStatus = "Ready";
         }
