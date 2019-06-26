@@ -45,7 +45,6 @@ namespace WpfDataGrid
             }
             catch (System.Exception)
             {
-
                 return string.Empty;
             }
         }
