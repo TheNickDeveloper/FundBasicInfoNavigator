@@ -1,5 +1,5 @@
 # FundBasicInfoNavigator
-Free API applyig in order to indicate the fund real time basic information.
+WPF project by applyig bond API for indicating the fund real time basic information.
 
 ## Design
 1. MVVM design pattern by using Caliburn.Micro framework.
