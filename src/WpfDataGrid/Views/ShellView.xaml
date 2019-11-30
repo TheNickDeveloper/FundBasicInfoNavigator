@@ -1,9 +1,9 @@
-﻿<Window x:Class="WpfDataGrid.Views.ShellView"
+﻿<Window x:Class="FundBasicInfoNavigator.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfDataGrid.Views"
+        xmlns:local="clr-namespace:FundBasicInfoNavigator.Views"
         mc:Ignorable="d"
         Title="ShellView" Height="590" Width="700" WindowStartupLocation="CenterScreen" >
 
@@ -14,13 +14,23 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Fund Sourcee:"/>
+                    <ComboBox x:Name="FundApiType" SelectedItem="{Binding SelectedFundApiType}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="135*"/>
+                        <ColumnDefinition Width="147*"/>
+                        <ColumnDefinition Width="259*"/>
+                        <ColumnDefinition Width="135*"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Bond Code:"/>
-                    <TextBox Text="{Binding BondListString}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
-                    <Button x:Name = "SearchButtonClick" Grid.Column="2"  FontSize="15" Margin="10">Search</Button>
+                    <TextBox Text="{Binding BondListString}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" Grid.ColumnSpan="2" />
+                    <Button x:Name = "SearchButtonClick" Grid.Column="3"  FontSize="15" Margin="10">Search</Button>
                 </Grid>
 
                 <Grid>

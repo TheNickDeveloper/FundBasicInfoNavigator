@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WpfDataGrid.Properties
+namespace FundBasicInfoNavigator.Properties
 {
 
 

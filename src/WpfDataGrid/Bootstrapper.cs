@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
 using System.Windows;
-using WpfDataGrid.ViewModels;
+using FundBasicInfoNavigator.ViewModels;
 
-namespace WpfDataGrid
+namespace FundBasicInfoNavigator
 {
     public class Bootstrapper : BootstrapperBase
     {

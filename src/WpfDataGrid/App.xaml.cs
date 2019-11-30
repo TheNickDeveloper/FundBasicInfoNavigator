@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WpfDataGrid
+namespace FundBasicInfoNavigator
 {
     /// <summary>
     /// Interaction logic for App.xaml

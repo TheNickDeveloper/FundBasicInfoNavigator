@@ -1,5 +1,5 @@
 ﻿using Xunit;
-using WpfDataGrid;
+using FundBasicInfoNavigator;
 
 namespace TestModule
 {
@@ -11,7 +11,7 @@ namespace TestModule
 
         public void GetStreamReaderContents_Test(string bpndCode,bool expectedResult)
         {
-            var httpHelper = new HttpHandler();
+            var httpHelper = new FundApiHandler();
             var url = $"http://fundgz.1234567.com.cn/js/{bpndCode}.js?rt=1463558676006";
             var fact = string.IsNullOrEmpty(httpHelper.GetStreamReaderContents(url));
             Assert.Equal(expectedResult, fact);

@@ -3,16 +3,40 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WpfDataGrid.ViewModels
+namespace FundBasicInfoNavigator.ViewModels
 {
     public class ShellViewModel : Caliburn.Micro.PropertyChangedBase
     {
 
         private string _bondList;
         private string _excuteStatus;
+        private string _selectedFundApiType;
         private List<string> _errorLog;
 
+
         public Caliburn.Micro.BindableCollection<BasicInfo> Fund { get; set; }
+        public List<string> FundApiType
+        {
+            get
+            {
+                return new List<string>
+                {
+                    "EastMoneyFund",
+                    "Test1",
+                    "Test2"
+                };
+            }
+        }
+
+        public string SelectedFundApiType
+        {
+            get => _selectedFundApiType;
+            set
+            {
+                _selectedFundApiType = value;
+                NotifyOfPropertyChange(() => SelectedFundApiType);
+            }
+        }
 
         public string BondListString
         {
@@ -59,40 +83,41 @@ namespace WpfDataGrid.ViewModels
         {
             ExcuteStatus = "Running";
 
-            var httpHandler = new HttpHandler();
-            var listResult = new List<BasicInfo>();
-
-            List<string> listSource = GetBondList(BondListString);
-            var taskList = new List<Task>();
-
-            foreach (var bondCode in listSource)
+            if (string.IsNullOrEmpty(BondListString))
             {
-                var currTask = Task.Factory.StartNew(
-                    ()=> httpHandler.StoreCurrentFundInfo(bondCode, ref listResult));
-
-                taskList.Add(currTask);
+                var errorMsgList = new List<string> { "The bond code is empty, please enter valid fund code." };
+                LogMessage = errorMsgList;
             }
+            else
+            {
+                var funApiHandler = new FundApiHandler();
+                var listResult = new List<BasicInfo>();
+                var taskList = new List<Task>();
+                List<string> listSource = GetBondList(BondListString);
 
-            Task.WaitAll(taskList.ToArray());
+                foreach (var bondCode in listSource)
+                {
+                    var currTask = Task.Factory.StartNew(()=> funApiHandler.StoreCurrentFundInfo(SelectedFundApiType, bondCode, ref listResult));
+                    taskList.Add(currTask);
+                }
 
-            RefreshDataGrid(listResult);
-
-            LogMessage = httpHandler.LogList;
+                Task.WaitAll(taskList.ToArray());
+                RefreshDataGrid(listResult);
+                LogMessage = funApiHandler.LogList;
+            }
 
             ExcuteStatus = "Ready";
         }
 
         private List<string> GetBondList(string stringSource)
         {
-            return stringSource.Split(',').Select(x => x.Trim()).ToList();
+            return stringSource.Split(',').Select(x => x.Trim()).Distinct().ToList();
         }
 
         private void RefreshDataGrid(List<BasicInfo> targetList)
         {
             Fund.Clear();
-            foreach (var item in targetList)
-                Fund.Add(item);
+            targetList.ForEach(x => Fund.Add(x));
         }
-
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WpfDataGrid.Views
+namespace FundBasicInfoNavigator.Views
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml

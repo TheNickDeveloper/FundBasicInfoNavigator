@@ -76,9 +76,9 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WpfDataGrid\WpfDataGrid.csproj">
+    <ProjectReference Include="..\WpfDataGrid\FundBasicInfoNavigator.csproj">
       <Project>{44fb9836-be4e-4f63-b616-a116930e9a76}</Project>
-      <Name>WpfDataGrid</Name>
+      <Name>FundBasicInfoNavigator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
