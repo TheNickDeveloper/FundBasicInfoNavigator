@@ -7,14 +7,13 @@ namespace FundBasicInfoNavigator.ViewModels
 {
     public class ShellViewModel : Caliburn.Micro.PropertyChangedBase
     {
-
         private string _bondList;
         private string _excuteStatus;
         private string _selectedFundApiType;
         private List<string> _errorLog;
 
-
         public Caliburn.Micro.BindableCollection<BasicInfo> Fund { get; set; }
+
         public List<string> FundApiType
         {
             get
@@ -71,6 +70,7 @@ namespace FundBasicInfoNavigator.ViewModels
         public ShellViewModel()
         {
             Fund = new Caliburn.Micro.BindableCollection<BasicInfo>();
+            SelectedFundApiType = "EastMoneyFund";
         }
 
         public void SearchButtonClick()
@@ -82,11 +82,14 @@ namespace FundBasicInfoNavigator.ViewModels
         private void RunFunction()
         {
             ExcuteStatus = "Running";
+            Fund.Clear();
+            
+            var logTempMsg = new List<string>();
+            LogMessage = logTempMsg;
 
             if (string.IsNullOrEmpty(BondListString))
             {
-                var errorMsgList = new List<string> { "The bond code is empty, please enter valid fund code." };
-                LogMessage = errorMsgList;
+                logTempMsg.Add("The bond code is empty, please enter valid fund code.");
             }
             else
             {
@@ -103,9 +106,9 @@ namespace FundBasicInfoNavigator.ViewModels
 
                 Task.WaitAll(taskList.ToArray());
                 RefreshDataGrid(listResult);
-                LogMessage = funApiHandler.LogList;
+                logTempMsg = funApiHandler.LogList;
             }
-
+            LogMessage = logTempMsg;
             ExcuteStatus = "Ready";
         }
 
@@ -116,7 +119,6 @@ namespace FundBasicInfoNavigator.ViewModels
 
         private void RefreshDataGrid(List<BasicInfo> targetList)
         {
-            Fund.Clear();
             targetList.ForEach(x => Fund.Add(x));
         }
     }

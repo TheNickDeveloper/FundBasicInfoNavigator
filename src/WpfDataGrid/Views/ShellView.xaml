@@ -5,12 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FundBasicInfoNavigator.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="590" Width="700" WindowStartupLocation="CenterScreen" >
+        Title="ShellView" Height="640" Width="700" WindowStartupLocation="CenterScreen" >
 
     <Grid>
-        <Border Padding="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Border Padding="10" Grid.ColumnSpan="2" Margin="0,0,0,0.5">
             <StackPanel>
                 <TextBlock Grid.Row="1" Margin="10 0 10 10" FontSize="28" Text="Fund Basic Info Navigator"/>
+                <!--todo, make tickbox for selecting data input mode-->
+                <!-- could be manual input-->
+                <!-- could be import CSV file input-->
+
+                <!--todo, make data export function as CSV file-->
+                <!-- make button for export-->
+                <!-- could will appear only when finishing doing search-->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -18,18 +29,17 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Fund Sourcee:"/>
-                    <ComboBox x:Name="FundApiType" SelectedItem="{Binding SelectedFundApiType}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
+                    <ComboBox x:Name="FundApiType" SelectedItem="{Binding SelectedFundApiType, Mode=OneWay}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="135*"/>
-                        <ColumnDefinition Width="147*"/>
-                        <ColumnDefinition Width="259*"/>
-                        <ColumnDefinition Width="135*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Bond Code:"/>
-                    <TextBox Text="{Binding BondListString}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" Grid.ColumnSpan="2" />
+                    <TextBox Text="{Binding BondListString}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" Grid.ColumnSpan="1" />
                     <Button x:Name = "SearchButtonClick" Grid.Column="3"  FontSize="15" Margin="10">Search</Button>
                 </Grid>
 
@@ -61,7 +71,7 @@
                 <TextBlock Grid.Row="1" Margin="10 10 10 10" FontSize="15" Text="Log Messages"/>
 
                 <Grid>
-                    <ListBox Height="170" ItemsSource="{Binding LogMessage}"/>
+                    <ListBox Height="150" ItemsSource="{Binding LogMessage}"/>
                 </Grid>
             </StackPanel>
         </Border>
