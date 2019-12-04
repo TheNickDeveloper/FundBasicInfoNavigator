@@ -10,7 +10,7 @@ namespace FundBasicInfoNavigator.Views
         public ShellView()
         {
             InitializeComponent();
+            this.SizeToContent = SizeToContent.Height;
         }
-
     }
 }

@@ -58,3 +58,6 @@ C:\Users\thinkpad\Documents\GitHub\FundBasicInfoNavigator\src\TestModule\bin\Deb
 C:\Users\thinkpad\Documents\GitHub\FundBasicInfoNavigator\src\TestModule\bin\Debug\Newtonsoft.Json.xml
 C:\Users\thinkpad\Documents\GitHub\FundBasicInfoNavigator\src\TestModule\bin\Debug\Caliburn.Micro.Platform.Core.xml
 C:\Users\thinkpad\Documents\GitHub\FundBasicInfoNavigator\src\TestModule\obj\Debug\TestModule.csproj.CopyComplete
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\TestModule\bin\Debug\FluentValidation.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\TestModule\bin\Debug\System.ComponentModel.Annotations.dll
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\TestModule\bin\Debug\FluentValidation.xml
