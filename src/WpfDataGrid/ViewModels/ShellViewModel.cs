@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using FundBasicInfoNavigator.Views;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace FundBasicInfoNavigator.ViewModels
 {
@@ -12,15 +14,15 @@ namespace FundBasicInfoNavigator.ViewModels
         private string _excuteStatus;
         private string _selectedFundApiType;
         private string _importDataPath;
-        private List<string> _errorLog;
         private bool _isDataInputManualSearch;
         private bool _isDataInputImportCsvFile;
         private string _exportDataPath;
         private bool _isExportResult;
         private bool _isDisplayOnly;
         private string _buttonContents;
+        private List<string> _errorLog;
 
-        List<string> _logTempMsg = new List<string>();
+        readonly List<string> _logTempMsg = new List<string>();
 
         public Caliburn.Micro.BindableCollection<BasicInfo> Fund { get; set; }
 
@@ -158,9 +160,7 @@ namespace FundBasicInfoNavigator.ViewModels
             IsDisplayOnly = true;
         }
 
-        // todo, Read file as string
-        //var reader = new System.IO.StreamReader(fileToOpen);
-        //reader.ReadToEnd();
+        
         public void BrowseButtonClickImportDataPath(object sender, RoutedEventArgs e)
         {
             var FD = new System.Windows.Forms.OpenFileDialog();
@@ -173,115 +173,116 @@ namespace FundBasicInfoNavigator.ViewModels
 
         public void BrowseButtonClickExportDataPath(object sender, RoutedEventArgs e)
         {
-            var FD = new System.Windows.Forms.OpenFileDialog();
+            var FD = new FolderBrowserDialog();
             if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ExportDataPath = FD.FileName;
+                ExportDataPath = FD.SelectedPath;
             }
         }
 
         public void SearchButtonClick()
         {
-            var t = new Thread(() => RunFunction());
-            t.Start();
-        }
-
-        private void RunFunction()
-        {
-            ExcuteStatus = "Running";
+            LogMessage = new List<string>();
             Fund.Clear();
 
-            LogMessage = _logTempMsg;
-
-            if (string.IsNullOrEmpty(BondListString))
+            if (IsPassUiValidation())
             {
-                _logTempMsg.Add("The bond code is empty, please enter valid fund code.");
-            }
-            else
-            {
-                var funApiHandler = new FundApiHandler();
-                var listResult = new List<BasicInfo>();
-                var taskList = new List<Task>();
-                List<string> listSource = GetBondList(BondListString);
-
-                foreach (var bondCode in listSource)
-                {
-                    var currTask = Task.Factory.StartNew(() => funApiHandler.StoreCurrentFundInfo(SelectedFundApiType, bondCode, ref listResult));
-                    taskList.Add(currTask);
-                }
-
-                Task.WaitAll(taskList.ToArray());
-                RefreshDataGrid(listResult);
-                _logTempMsg = funApiHandler.LogList;
-            }
-
-
-            if (IsExportResult)
-            {
-                //export Report
-                _logTempMsg.Add("Finish export result :)");
+                var t = new Thread(() => RunFunction());
+                t.Start();
             }
 
             LogMessage = _logTempMsg;
-            ExcuteStatus = "Ready";
         }
 
-        //todo, could be a seperated class
         private bool IsPassUiValidation()
         {
-            if (IsDataInputManualSearch)
+            _logTempMsg.Clear();
+            var uiInputValidator = new UiInputValidator();
+            var valideResult = true;
+
+            if (IsDataInputManualSearch && valideResult)
             {
-                if (string.IsNullOrEmpty(BondListString))
-                {
-                    _logTempMsg.Add("The bond code is empty, please enter valid fund code.");
-                    return false;
-                }
+                valideResult = uiInputValidator.IsEmptyContents(BondListString, "bond code");
             }
 
-            // todo
-            if (IsDataInputImportCsvFile)
+            if (IsDataInputImportCsvFile && valideResult)
             {
-                if (string.IsNullOrEmpty(ImportDataPath))
-                {
-                    _logTempMsg.Add("Import file path is empty, please enter valid file path.");
-                    return false;
-                }
-
-                // todo, file no found
-                if (true)
-                {
-                    _logTempMsg.Add("Import file path cannot be found, please enter valid file path.");
-                    return false;
-                }
+                valideResult = uiInputValidator.IsValideFilePath(ImportDataPath, "Import file path");
             }
 
-            // todo
-            if (IsExportResult)
+            if (IsExportResult && valideResult)
             {
-                if (string.IsNullOrEmpty(ImportDataPath))
-                {
-                    _logTempMsg.Add("Export file path is empty, please enter valid file path.");
-                    return false;
-                }
+                valideResult = uiInputValidator.IsValideFolderPath(ExportDataPath, "Export file path");
+            }
 
-                if (true)
-                {
-                    _logTempMsg.Add("Export folder path cannot be found, please enter valid file path.");
-                    return false;
-                }
+            if (!valideResult)
+            {
+                _logTempMsg.Add(uiInputValidator.ErrorMessage);
+                return false;
             }
 
             return true;
         }
 
-        private List<string> GetBondList(string stringSource)
+        private void RunFunction()
         {
+            ExcuteStatus = "Running";
+
+            var funApiHandler = new FundApiHandler();
+            var listResult = new List<BasicInfo>();
+            var taskList = new List<Task>();
+            List<string> listSource = GetBondList();
+
+            foreach (var bondCode in listSource)
+            {
+                var currTask = Task.Factory.StartNew(() => funApiHandler.StoreCurrentFundInfo(SelectedFundApiType, bondCode, ref listResult));
+                taskList.Add(currTask);
+            }
+
+            Task.WaitAll(taskList.ToArray());
+            RefreshDataGrid(listResult);
+
+            var _log = new List<string>();
+            _log = funApiHandler.LogList;
+
+            if (IsExportResult)
+            {
+                //export Report
+                ExportResult(ExportDataPath);
+                _log.Add("Finish export result :)");
+            }
+
+            LogMessage = _log;
+            ExcuteStatus = "Ready";
+        }
+
+
+        private List<string> GetBondList()
+        {
+            string stringSource = string.Empty;
+
+            if (IsDataInputManualSearch)
+            {
+                stringSource = BondListString;
+            }
+
+            if (IsDataInputImportCsvFile)
+            {
+                var reader = new System.IO.StreamReader(ImportDataPath);
+                stringSource = reader.ReadToEnd();
+            }
+
             return stringSource.Split(',').Select(x => x.Trim()).Distinct().ToList();
         }
 
         private void RefreshDataGrid(List<BasicInfo> targetList)
         {
             targetList.ForEach(x => Fund.Add(x));
+        }
+
+        private void ExportResult(string outputFolderPath)
+        {
+
         }
     }
 }

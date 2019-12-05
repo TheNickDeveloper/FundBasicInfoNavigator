@@ -12,7 +12,6 @@
     <Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converters:ChangeButtonConverter x:Key="ChangeButtonConverter" />
-
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -142,7 +141,7 @@
                 <!-- LogMessage -->
                 <TextBlock Grid.Row="1" Margin="10 10 10 10" FontSize="15" Text="Log Messages"/>
                 <Grid>
-                    <ListBox Height="160" ItemsSource="{Binding LogMessage}"/>
+                    <ListBox Height="160" ItemsSource="{Binding LogMessage, Mode=TwoWay}"/>
                 </Grid>
             </StackPanel>
         </Border>
