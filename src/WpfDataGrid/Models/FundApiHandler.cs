@@ -45,6 +45,12 @@ namespace FundBasicInfoNavigator
             {
                 objResult.FundCode = fundCode;
                 objResult.Name = "No Found";
+                objResult.JZRQ = "No Found";
+                objResult.DWJZ = "No Found";
+                objResult.GSZ = "No Found";
+                objResult.GSZZL = "No Found";
+                objResult.GzTime = "No Found";
+
                 LogList.Add($"Bond Code: {fundCode} no found.");
             }
 

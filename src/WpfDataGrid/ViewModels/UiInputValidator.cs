@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace FundBasicInfoNavigator.Views
+namespace FundBasicInfoNavigator.ViewModels
 {
     public class UiInputValidator
     {

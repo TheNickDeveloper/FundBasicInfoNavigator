@@ -55,7 +55,7 @@
 
                     <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Export Options:"/>
                     <RadioButton GroupName="ExportOptions" Content="Display Only" IsChecked="{Binding IsDisplayOnly}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
-                    <RadioButton GroupName="ExportOptions" Content="Export Result" IsChecked="{Binding IsExportResult}" Grid.Column="2" Margin="10" FontSize="15" FontWeight="Bold" />
+                    <RadioButton GroupName="ExportOptions" Content="Export CSV Result" IsChecked="{Binding IsExportCsvResult}" Grid.Column="2" Margin="10" FontSize="15" FontWeight="Bold" />
                 </Grid>
 
                 <!-- DataInput ManualSearch -->
@@ -92,7 +92,7 @@
                 <!-- Export Result Folder Path -->
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{Binding IsExportResult, Converter={StaticResource BoolToVisibilityConverter}}"></RowDefinition>
+                        <RowDefinition Height="{Binding IsExportCsvResult, Converter={StaticResource BoolToVisibilityConverter}}"></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -108,7 +108,7 @@
 
                 <!-- Search Button Click -->
                 <Grid>
-                    <Button x:Name = "SearchButtonClick" Grid.Column="3"  FontSize="15" Margin="10" Content="{Binding IsExportResult, Converter={StaticResource ChangeButtonConverter}}" />
+                    <Button x:Name = "SearchButtonClick" Grid.Column="3"  FontSize="15" Margin="10" Content="{Binding IsExportCsvResult, Converter={StaticResource ChangeButtonConverter}}" />
                 </Grid>
 
                 <!-- ExcuteStatus -->
@@ -121,6 +121,7 @@
                     <TextBlock Text="{Binding ExcuteStatus}" Grid.Column="1" Margin="10" FontSize="15" />
                 </Grid>
 
+                <!--Todo, Dynamic binding input set-->
                 <!-- Fund Grid Table -->
                 <Grid>
                     <ScrollViewer  VerticalScrollBarVisibility="Auto" Height="Auto">

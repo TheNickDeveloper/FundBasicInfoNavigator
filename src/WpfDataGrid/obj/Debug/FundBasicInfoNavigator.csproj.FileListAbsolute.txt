@@ -80,3 +80,4 @@ C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\De
 C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\Debug\FundBasicInfoNavigator.csproj.CopyComplete
 C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\Debug\WpfDataGrid.exe
 C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\Debug\WpfDataGrid.pdb
+C:\Users\NickTsai\Documents\GitHub\FundBasicInfoNavigator\src\WpfDataGrid\obj\Debug\FundBasicInfoNavigator.csprojAssemblyReference.cache

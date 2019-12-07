@@ -1,10 +1,10 @@
-﻿using FundBasicInfoNavigator.Views;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using WpfDataGrid.ViewModels;
 
 namespace FundBasicInfoNavigator.ViewModels
 {
@@ -81,14 +81,14 @@ namespace FundBasicInfoNavigator.ViewModels
             }
         }
 
-        public bool IsExportResult
+        public bool IsExportCsvResult
         {
 
             get => _isExportResult;
             set
             {
                 _isExportResult = value;
-                NotifyOfPropertyChange(() => IsExportResult);
+                NotifyOfPropertyChange(() => IsExportCsvResult);
             }
         }
 
@@ -163,8 +163,8 @@ namespace FundBasicInfoNavigator.ViewModels
         
         public void BrowseButtonClickImportDataPath(object sender, RoutedEventArgs e)
         {
-            var FD = new System.Windows.Forms.OpenFileDialog();
-            if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var FD = new OpenFileDialog();
+            if (FD.ShowDialog() == DialogResult.OK)
             {
                 ImportDataPath = FD.FileName;
 
@@ -174,7 +174,7 @@ namespace FundBasicInfoNavigator.ViewModels
         public void BrowseButtonClickExportDataPath(object sender, RoutedEventArgs e)
         {
             var FD = new FolderBrowserDialog();
-            if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (FD.ShowDialog() == DialogResult.OK)
             {
                 ExportDataPath = FD.SelectedPath;
             }
@@ -200,7 +200,7 @@ namespace FundBasicInfoNavigator.ViewModels
             var uiInputValidator = new UiInputValidator();
             var valideResult = true;
 
-            if (IsDataInputManualSearch && valideResult)
+            if (IsDataInputManualSearch)
             {
                 valideResult = uiInputValidator.IsEmptyContents(BondListString, "bond code");
             }
@@ -210,7 +210,7 @@ namespace FundBasicInfoNavigator.ViewModels
                 valideResult = uiInputValidator.IsValideFilePath(ImportDataPath, "Import file path");
             }
 
-            if (IsExportResult && valideResult)
+            if (IsExportCsvResult && valideResult)
             {
                 valideResult = uiInputValidator.IsValideFolderPath(ExportDataPath, "Export file path");
             }
@@ -245,10 +245,9 @@ namespace FundBasicInfoNavigator.ViewModels
             var _log = new List<string>();
             _log = funApiHandler.LogList;
 
-            if (IsExportResult)
+            if (IsExportCsvResult)
             {
-                //export Report
-                ExportResult(ExportDataPath);
+                ExportResult(listResult);
                 _log.Add("Finish export result :)");
             }
 
@@ -280,9 +279,10 @@ namespace FundBasicInfoNavigator.ViewModels
             targetList.ForEach(x => Fund.Add(x));
         }
 
-        private void ExportResult(string outputFolderPath)
+        private void ExportResult(List<BasicInfo> listResult)
         {
-
+            var exportHandler = new ResultExporter();
+            exportHandler.ExportAsCsvFile(ExportDataPath, listResult);
         }
     }
 }
