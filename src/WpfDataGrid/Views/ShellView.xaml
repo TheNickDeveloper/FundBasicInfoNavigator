@@ -12,6 +12,7 @@
     <Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converters:ChangeButtonConverter x:Key="ChangeButtonConverter" />
+        <converters:DisplayOutputFolderConverter x:Key="DisplayOutputFolderConverter" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,9 +35,9 @@
                 <!-- DataInputOption -->
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="2.25*"/>
+                        <ColumnDefinition Width="2.25*"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Input Option:"/>
@@ -44,18 +45,20 @@
                     <RadioButton GroupName="DataInputOption" Content="Import CSV file" IsChecked="{Binding IsDataInputImportCsvFile}" Grid.Column="2" Margin="10" FontSize="15" FontWeight="Bold" />
                 </Grid>
 
+                <!--Todo, Add one more option for Export Excel file (the method has been developed)-->
                 <!-- Export Options -->
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Export Options:"/>
                     <RadioButton GroupName="ExportOptions" Content="Display Only" IsChecked="{Binding IsDisplayOnly}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
-                    <RadioButton GroupName="ExportOptions" Content="Export CSV Result" IsChecked="{Binding IsExportCsvResult}" Grid.Column="2" Margin="10" FontSize="15" FontWeight="Bold" />
+                    <RadioButton GroupName="ExportOptions" Content="Export as CSV" IsChecked="{Binding IsExportCsvResult}" Grid.Column="2" Margin="10" FontSize="15" FontWeight="Bold" />
+                    <RadioButton GroupName="ExportOptions" Content="Export as Excel" IsChecked="{Binding IsExportExcelResult}" Grid.Column="3" Margin="10" FontSize="15" FontWeight="Bold" />
                 </Grid>
 
                 <!-- DataInput ManualSearch -->
@@ -92,7 +95,7 @@
                 <!-- Export Result Folder Path -->
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="{Binding IsExportCsvResult, Converter={StaticResource BoolToVisibilityConverter}}"></RowDefinition>
+                        <RowDefinition Height="{Binding IsDisplayOnly, Converter={StaticResource DisplayOutputFolderConverter}}"></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -108,7 +111,7 @@
 
                 <!-- Search Button Click -->
                 <Grid>
-                    <Button x:Name = "SearchButtonClick" Grid.Column="3"  FontSize="15" Margin="10" Content="{Binding IsExportCsvResult, Converter={StaticResource ChangeButtonConverter}}" />
+                    <Button x:Name = "SearchButtonClick" Grid.Column="3"  FontSize="15" Margin="10" Content="{Binding IsDisplayOnly, Converter={StaticResource ChangeButtonConverter}}" />
                 </Grid>
 
                 <!-- ExcuteStatus -->

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-//todo, not in use yet
+//todo, may need to used for dynamic input data
 namespace FundBasicInfoNavigator.ProcessLogic
 {
     public class Validator:AbstractValidator<BasicInfo>

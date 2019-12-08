@@ -9,8 +9,8 @@ namespace FundBasicInfoNavigator.Views.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return ((bool)value == true)
-                ? "Search & Export" 
-                : "Search";
+                ? "Search"
+                : "Search & Export";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

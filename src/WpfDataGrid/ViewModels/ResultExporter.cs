@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Excel;
 
 namespace WpfDataGrid.ViewModels
 {
     public class ResultExporter
     {
-        public void ExportAsCsvFile<T>(string path, List<T> objList)
+        public void ExportAsCsvFile<T>(string path, string exportFileName, List<T> objList)
         {
             var sb = new StringBuilder();
             var titleNameString = GetTitleNameString<T>();
 
             sb.AppendLine(titleNameString);
             objList.ForEach(x => sb.AppendLine(x.ToString()));
-
-            path += @$"\FundResultOutput_{DateTime.Now.ToString("yyyyMMdd")}.csv";
-            File.WriteAllText(path, sb.ToString());
+            path += @$"\{exportFileName}.csv";
+            File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
         }
 
         private string GetTitleNameString<T>()
@@ -30,7 +30,28 @@ namespace WpfDataGrid.ViewModels
                 titleNameString += item.Name + ", ";
             }
 
-            return titleNameString.Substring(titleNameString.Length - 2);
+            return titleNameString.Substring(0, titleNameString.Length - 2);
+        }
+
+        public void ExportAsExcel<T>(string path, string exportFileName, List<T> objList)
+        {
+            ExportAsCsvFile<T>(path, "tempFile1", objList);
+            var csvResultFile = path + @"\tempFile1.csv";
+
+            var app = new Excel.Application
+            {
+                DisplayAlerts = false
+            };
+
+            var workbook = app.Workbooks.Open(csvResultFile);
+            workbook.Saved = true;
+
+            var workSheet = (Excel.Worksheet)app.ActiveSheet;
+            workSheet.Name = exportFileName;
+            workbook.SaveAs(path + @$"\{exportFileName}.xlsx", XlFileFormat.xlExcel8);
+            workbook.Close();
+
+            File.Delete(csvResultFile);
         }
 
     }

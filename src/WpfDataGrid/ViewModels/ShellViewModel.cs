@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,11 +18,11 @@ namespace FundBasicInfoNavigator.ViewModels
         private bool _isDataInputManualSearch;
         private bool _isDataInputImportCsvFile;
         private string _exportDataPath;
-        private bool _isExportResult;
+        private bool _isExportCsvResult;
         private bool _isDisplayOnly;
         private string _buttonContents;
         private List<string> _errorLog;
-
+        private bool _isExportExcelResult;
         readonly List<string> _logTempMsg = new List<string>();
 
         public Caliburn.Micro.BindableCollection<BasicInfo> Fund { get; set; }
@@ -84,11 +85,21 @@ namespace FundBasicInfoNavigator.ViewModels
         public bool IsExportCsvResult
         {
 
-            get => _isExportResult;
+            get => _isExportCsvResult;
             set
             {
-                _isExportResult = value;
+                _isExportCsvResult = value;
                 NotifyOfPropertyChange(() => IsExportCsvResult);
+            }
+        }
+
+        public bool IsExportExcelResult
+        {
+            get => _isExportExcelResult;
+            set
+            {
+                _isExportExcelResult = value;
+                NotifyOfPropertyChange(() => IsExportExcelResult);
             }
         }
 
@@ -160,7 +171,7 @@ namespace FundBasicInfoNavigator.ViewModels
             IsDisplayOnly = true;
         }
 
-        
+
         public void BrowseButtonClickImportDataPath(object sender, RoutedEventArgs e)
         {
             var FD = new OpenFileDialog();
@@ -210,7 +221,7 @@ namespace FundBasicInfoNavigator.ViewModels
                 valideResult = uiInputValidator.IsValideFilePath(ImportDataPath, "Import file path");
             }
 
-            if (IsExportCsvResult && valideResult)
+            if (IsExportCsvResult || IsExportExcelResult && valideResult)
             {
                 valideResult = uiInputValidator.IsValideFolderPath(ExportDataPath, "Export file path");
             }
@@ -245,7 +256,7 @@ namespace FundBasicInfoNavigator.ViewModels
             var _log = new List<string>();
             _log = funApiHandler.LogList;
 
-            if (IsExportCsvResult)
+            if (IsExportCsvResult || IsExportExcelResult)
             {
                 ExportResult(listResult);
                 _log.Add("Finish export result :)");
@@ -282,7 +293,17 @@ namespace FundBasicInfoNavigator.ViewModels
         private void ExportResult(List<BasicInfo> listResult)
         {
             var exportHandler = new ResultExporter();
-            exportHandler.ExportAsCsvFile(ExportDataPath, listResult);
+            var exportFileName = $"FundResultOutput_{DateTime.Now.ToString("yyyyMMdd")}";
+
+            if (IsExportCsvResult)
+            {
+                exportHandler.ExportAsCsvFile(ExportDataPath, exportFileName, listResult);
+            }
+
+            if (IsExportExcelResult)
+            {
+                exportHandler.ExportAsExcel(ExportDataPath, exportFileName, listResult);
+            }
         }
     }
 }

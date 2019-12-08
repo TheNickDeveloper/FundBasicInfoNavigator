@@ -5,13 +5,13 @@ using System.Windows.Data;
 
 namespace FundBasicInfoNavigator.Views.Converters
 {
-    public class BoolToVisibilityConverter : IValueConverter
+    public class DisplayOutputFolderConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return ((bool)value == true)
-                ? new GridLength(1, GridUnitType.Star)
-                : new GridLength(0);
+                ? new GridLength(0)
+                : new GridLength(1, GridUnitType.Star);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

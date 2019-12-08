@@ -29,7 +29,9 @@ namespace FundBasicInfoNavigator
 
             if (!string.IsNullOrEmpty(contents))
             {
+                //todo, could tyr auto mappter from one class to another 
                 var convertResult = JsonConvert.DeserializeObject<BasicInfo>(ModifyJsonFormat(contents));
+
                 if (convertResult != null)
                 {
                     objResult = convertResult;
