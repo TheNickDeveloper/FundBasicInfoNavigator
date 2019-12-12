@@ -1,8 +1,8 @@
 ﻿using System.IO;
 
-namespace FundBasicInfoNavigator.ViewModels
+namespace FundBasicInfoNavigator.Services
 {
-    public class UiInputValidator
+    public class InputValidator
     {
         public string ErrorMessage { get; set; }
 

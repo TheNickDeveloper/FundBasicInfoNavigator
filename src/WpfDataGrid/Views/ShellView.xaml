@@ -29,24 +29,24 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Fund Source:"/>
-                    <ComboBox x:Name="FundApiType" SelectedItem="{Binding SelectedFundApiType, Mode=OneWay}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
+                    <ComboBox x:Name="FundApiType" SelectedItem="{Binding SelectedFundApiType}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
                 </Grid>
 
                 <!-- DataInputOption -->
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="2.25*"/>
-                        <ColumnDefinition Width="2.25*"/>
+                        <ColumnDefinition Width="13*"/>
+                        <ColumnDefinition Width="71*"/>
+                        <ColumnDefinition Width="126*"/>
+                        <ColumnDefinition Width="126*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Input Option:"/>
-                    <RadioButton GroupName="DataInputOption" Content="Manual Search" IsChecked="{Binding IsDataInputManualSearch}" Grid.Column="1" Margin="10" FontSize="15" FontWeight="Bold" />
-                    <RadioButton GroupName="DataInputOption" Content="Import CSV file" IsChecked="{Binding IsDataInputImportCsvFile}" Grid.Column="2" Margin="10" FontSize="15" FontWeight="Bold" />
+                    <TextBlock Grid.Column="0" Margin="10" FontSize="15" Text="Input Option:" Grid.ColumnSpan="2"/>
+                    <RadioButton GroupName="DataInputOption" Content="Manual Search" IsChecked="{Binding IsDataInputManualSearch}" Grid.Column="2" Margin="10" FontSize="15" FontWeight="Bold" />
+                    <RadioButton GroupName="DataInputOption" Content="Import CSV file" IsChecked="{Binding IsDataInputImportCsvFile}" Grid.Column="3" Margin="10" FontSize="15" FontWeight="Bold" />
                 </Grid>
 
-                <!--Todo, Add one more option for Export Excel file (the method has been developed)-->
-                <!-- Export Options -->
+                <!-- Export option -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.5*"/>

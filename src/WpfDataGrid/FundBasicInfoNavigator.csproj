@@ -111,11 +111,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\BasicInfo.cs" />
+    <Compile Include="Data\FundApiSource.cs" />
+    <Compile Include="Data\ApiDataExtractor.cs" />
+    <Compile Include="Interfaces\IApiDataExtractor.cs" />
+    <Compile Include="Models\EastMoneyFundBasicInfo.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Models\FundApiHandler.cs" />
-    <Compile Include="Models\Validator.cs" />
-    <Compile Include="ViewModels\ResultExporter.cs" />
+    <Compile Include="Interfaces\IFundBasicInfo.cs" />
+    <Compile Include="Services\FundHandlers\EastMoneyFundHandler.cs" />
+    <Compile Include="Interfaces\IFundHandler.cs" />
+    <Compile Include="Services\FundInfoSearcher.cs" />
+    <Compile Include="Services\PathBrowseHelper.cs" />
+    <Compile Include="Services\ResultExporter.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Views\Converters\ChangeButtonConverter.cs" />
@@ -123,7 +129,7 @@
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\UiInputValidator.cs" />
+    <Compile Include="Services\InputValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

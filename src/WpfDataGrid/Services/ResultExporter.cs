@@ -5,7 +5,7 @@ using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Excel;
 
-namespace WpfDataGrid.ViewModels
+namespace FundBasicInfoNavigator.Services
 {
     public class ResultExporter
     {
@@ -35,8 +35,8 @@ namespace WpfDataGrid.ViewModels
 
         public void ExportAsExcel<T>(string path, string exportFileName, List<T> objList)
         {
-            ExportAsCsvFile<T>(path, "tempFile1", objList);
-            var csvResultFile = path + @"\tempFile1.csv";
+            ExportAsCsvFile<T>(path, "tempFile", objList);
+            var csvResultFile = path + @"\tempFile.csv";
 
             var app = new Excel.Application
             {

@@ -1,16 +1,18 @@
-﻿using System;
+﻿using FundBasicInfoNavigator.Services;
+using FundBasicInfoNavigator.Services.FundHandlers;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
-using WpfDataGrid.ViewModels;
+using FundBasicInfoNavigator.Data;
+using FundBasicInfoNavigator.Models;
+using WpfDataGrid.Services;
+using FundBasicInfoNavigator.Interfaces;
 
 namespace FundBasicInfoNavigator.ViewModels
 {
     public class ShellViewModel : Caliburn.Micro.PropertyChangedBase
     {
+        private readonly FundApiSource _fundApiSource;
+        private readonly PathBrowseHelper _pathBrowseHelper;
+
         private string _bondList;
         private string _excuteStatus;
         private string _selectedFundApiType;
@@ -23,20 +25,14 @@ namespace FundBasicInfoNavigator.ViewModels
         private string _buttonContents;
         private List<string> _errorLog;
         private bool _isExportExcelResult;
-        readonly List<string> _logTempMsg = new List<string>();
 
-        public Caliburn.Micro.BindableCollection<BasicInfo> Fund { get; set; }
+        public Caliburn.Micro.BindableCollection<IFundBasicInfo> Fund { get; set; }
 
         public List<string> FundApiType
         {
             get
             {
-                return new List<string>
-                {
-                    "EastMoneyFund",
-                    "Test1",
-                    "Test2"
-                };
+                return _fundApiSource.FundApiType;
             }
         }
 
@@ -165,145 +161,44 @@ namespace FundBasicInfoNavigator.ViewModels
 
         public ShellViewModel()
         {
-            Fund = new Caliburn.Micro.BindableCollection<BasicInfo>();
+            _fundApiSource = new FundApiSource();
+            _pathBrowseHelper = new PathBrowseHelper();
+
+            Fund = new Caliburn.Micro.BindableCollection<IFundBasicInfo>();
             SelectedFundApiType = "EastMoneyFund";
             IsDataInputManualSearch = true;
             IsDisplayOnly = true;
         }
 
-
-        public void BrowseButtonClickImportDataPath(object sender, RoutedEventArgs e)
+        public void BrowseButtonClickImportDataPath()
         {
-            var FD = new OpenFileDialog();
-            if (FD.ShowDialog() == DialogResult.OK)
-            {
-                ImportDataPath = FD.FileName;
-
-            }
+            ImportDataPath = _pathBrowseHelper.FilePathBrowser(ImportDataPath);
         }
 
-        public void BrowseButtonClickExportDataPath(object sender, RoutedEventArgs e)
+        public void BrowseButtonClickExportDataPath()
         {
-            var FD = new FolderBrowserDialog();
-            if (FD.ShowDialog() == DialogResult.OK)
-            {
-                ExportDataPath = FD.SelectedPath;
-            }
+            ExportDataPath = _pathBrowseHelper.FolderPathBrowser(ExportDataPath);
         }
 
         public void SearchButtonClick()
         {
-            LogMessage = new List<string>();
-            Fund.Clear();
+            var apiDataExtractor = new ApiDataExtractor();
 
-            if (IsPassUiValidation())
+            switch (SelectedFundApiType)
             {
-                var t = new Thread(() => RunFunction());
-                t.Start();
-            }
+                case "EastMoneyFund":
+                    var fundHandler = new EastMoneyFundHandler(apiDataExtractor);
+                    var EastMoneyFundSearcher = new FundInfoSearcher<EastMoneyFundBasicInfo>(fundHandler, this);
+                    EastMoneyFundSearcher.SearchButtonClickLogic();
+                    break;
 
-            LogMessage = _logTempMsg;
-        }
-
-        private bool IsPassUiValidation()
-        {
-            _logTempMsg.Clear();
-            var uiInputValidator = new UiInputValidator();
-            var valideResult = true;
-
-            if (IsDataInputManualSearch)
-            {
-                valideResult = uiInputValidator.IsEmptyContents(BondListString, "bond code");
-            }
-
-            if (IsDataInputImportCsvFile && valideResult)
-            {
-                valideResult = uiInputValidator.IsValideFilePath(ImportDataPath, "Import file path");
-            }
-
-            if (IsExportCsvResult || IsExportExcelResult && valideResult)
-            {
-                valideResult = uiInputValidator.IsValideFolderPath(ExportDataPath, "Export file path");
-            }
-
-            if (!valideResult)
-            {
-                _logTempMsg.Add(uiInputValidator.ErrorMessage);
-                return false;
-            }
-
-            return true;
-        }
-
-        private void RunFunction()
-        {
-            ExcuteStatus = "Running";
-
-            var funApiHandler = new FundApiHandler();
-            var listResult = new List<BasicInfo>();
-            var taskList = new List<Task>();
-            List<string> listSource = GetBondList();
-
-            foreach (var bondCode in listSource)
-            {
-                var currTask = Task.Factory.StartNew(() => funApiHandler.StoreCurrentFundInfo(SelectedFundApiType, bondCode, ref listResult));
-                taskList.Add(currTask);
-            }
-
-            Task.WaitAll(taskList.ToArray());
-            RefreshDataGrid(listResult);
-
-            var _log = new List<string>();
-            _log = funApiHandler.LogList;
-
-            if (IsExportCsvResult || IsExportExcelResult)
-            {
-                ExportResult(listResult);
-                _log.Add("Finish export result :)");
-            }
-
-            LogMessage = _log;
-            ExcuteStatus = "Ready";
-        }
-
-
-        private List<string> GetBondList()
-        {
-            string stringSource = string.Empty;
-
-            if (IsDataInputManualSearch)
-            {
-                stringSource = BondListString;
-            }
-
-            if (IsDataInputImportCsvFile)
-            {
-                var reader = new System.IO.StreamReader(ImportDataPath);
-                stringSource = reader.ReadToEnd();
-            }
-
-            return stringSource.Split(',').Select(x => x.Trim()).Distinct().ToList();
-        }
-
-        private void RefreshDataGrid(List<BasicInfo> targetList)
-        {
-            targetList.ForEach(x => Fund.Add(x));
-        }
-
-        private void ExportResult(List<BasicInfo> listResult)
-        {
-            var exportHandler = new ResultExporter();
-            var exportFileName = $"FundResultOutput_{DateTime.Now.ToString("yyyyMMdd")}";
-
-            if (IsExportCsvResult)
-            {
-                exportHandler.ExportAsCsvFile(ExportDataPath, exportFileName, listResult);
-            }
-
-            if (IsExportExcelResult)
-            {
-                exportHandler.ExportAsExcel(ExportDataPath, exportFileName, listResult);
+                default:
+                    var funHandlerTest = new EastMoneyFundHandler(apiDataExtractor);
+                    var TestFundSearcher = new FundInfoSearcher<EastMoneyFundBasicInfo>(funHandlerTest, this);
+                    TestFundSearcher.SearchButtonClickLogic();
+                    break;
             }
         }
+
     }
 }

@@ -1,19 +1,19 @@
 ﻿using Xunit;
-using FundBasicInfoNavigator;
+using FundBasicInfoNavigator.Data;
 
 namespace TestModule
 {
     public class ApiTest
     {
         [Theory]
-        [InlineData("001186",false)]
+        [InlineData("001186", false)]
         [InlineData("x", true)]
 
-        public void GetStreamReaderContents_Test(string bpndCode,bool expectedResult)
+        public void GetStreamReaderContents_Test(string bpndCode, bool expectedResult)
         {
-            var httpHelper = new FundApiHandler();
+            var apiDataExtractor = new ApiDataExtractor();
             var url = $"http://fundgz.1234567.com.cn/js/{bpndCode}.js?rt=1463558676006";
-            var fact = string.IsNullOrEmpty(httpHelper.GetStreamReaderContents(url));
+            var fact = string.IsNullOrEmpty(apiDataExtractor.GetStreamReaderContents(url));
             Assert.Equal(expectedResult, fact);
         }
     }
