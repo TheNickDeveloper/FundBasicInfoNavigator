@@ -16,5 +16,10 @@ namespace FundBasicInfoNavigator.Data
                 };
             }
         }
+
+        public string EastMoneyFundUrl
+        {
+            get => $"http://fundgz.1234567.com.cn/js/targetFundCode.js?rt=1463558676006";
+        }
     }
 }

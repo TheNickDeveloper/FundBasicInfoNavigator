@@ -124,21 +124,10 @@
                     <TextBlock Text="{Binding ExcuteStatus}" Grid.Column="1" Margin="10" FontSize="15" />
                 </Grid>
 
-                <!--Todo, Dynamic binding input set-->
                 <!-- Fund Grid Table -->
                 <Grid>
                     <ScrollViewer  VerticalScrollBarVisibility="Auto" Height="Auto">
-                        <DataGrid Height="180" x:Name="Fund" AlternatingRowBackground="Gold" CanUserAddRows="False" AutoGenerateColumns="False"  >
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="FundCode" Binding="{Binding Path=FundCode}"/>
-                                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
-                                <DataGridTextColumn Header="NetValueDate" Binding="{Binding Path=JZRQ}"/>
-                                <DataGridTextColumn Header="UnitNetValue" Binding="{Binding Path=DWJZ}"/>
-                                <DataGridTextColumn Header="EstimateValue" Binding="{Binding Path=GSZ}"/>
-                                <DataGridTextColumn Header="EstimateValueRate" Binding="{Binding Path=GSZZL}"/>
-                                <DataGridTextColumn Header="EstimateDate" Binding="{Binding Path=GzTime}"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <DataGrid ItemsSource="{Binding DataView}" AutoGenerateColumns="True" Height="180" AlternatingRowBackground="Gold" CanUserAddRows="False" />
                     </ScrollViewer >
                 </Grid>
 

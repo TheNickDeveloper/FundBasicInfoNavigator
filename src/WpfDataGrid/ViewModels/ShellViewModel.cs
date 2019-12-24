@@ -5,6 +5,7 @@ using FundBasicInfoNavigator.Data;
 using FundBasicInfoNavigator.Models;
 using WpfDataGrid.Services;
 using FundBasicInfoNavigator.Interfaces;
+using System.Data;
 
 namespace FundBasicInfoNavigator.ViewModels
 {
@@ -13,18 +14,19 @@ namespace FundBasicInfoNavigator.ViewModels
         private readonly FundApiSource _fundApiSource;
         private readonly PathBrowseHelper _pathBrowseHelper;
 
+        private bool _isDataInputManualSearch;
+        private bool _isDataInputImportCsvFile;
+        private bool _isExportCsvResult;
+        private bool _isExportExcelResult;
+        private bool _isDisplayOnly;
         private string _bondList;
         private string _excuteStatus;
         private string _selectedFundApiType;
         private string _importDataPath;
-        private bool _isDataInputManualSearch;
-        private bool _isDataInputImportCsvFile;
         private string _exportDataPath;
-        private bool _isExportCsvResult;
-        private bool _isDisplayOnly;
         private string _buttonContents;
         private List<string> _errorLog;
-        private bool _isExportExcelResult;
+        private DataTable _dataView;
 
         public Caliburn.Micro.BindableCollection<IFundBasicInfo> Fund { get; set; }
 
@@ -33,6 +35,16 @@ namespace FundBasicInfoNavigator.ViewModels
             get
             {
                 return _fundApiSource.FundApiType;
+            }
+        }
+
+        public DataTable DataView
+        {
+            get { return _dataView; }
+            set
+            {
+                _dataView = value;
+                NotifyOfPropertyChange(() => DataView);
             }
         }
 
@@ -166,6 +178,7 @@ namespace FundBasicInfoNavigator.ViewModels
 
             Fund = new Caliburn.Micro.BindableCollection<IFundBasicInfo>();
             SelectedFundApiType = "EastMoneyFund";
+            ExcuteStatus = "Ready";
             IsDataInputManualSearch = true;
             IsDisplayOnly = true;
         }
@@ -187,13 +200,13 @@ namespace FundBasicInfoNavigator.ViewModels
             switch (SelectedFundApiType)
             {
                 case "EastMoneyFund":
-                    var fundHandler = new EastMoneyFundHandler(apiDataExtractor);
+                    var fundHandler = new EastMoneyFundHandler(apiDataExtractor, _fundApiSource);
                     var EastMoneyFundSearcher = new FundInfoSearcher<EastMoneyFundBasicInfo>(fundHandler, this);
                     EastMoneyFundSearcher.SearchButtonClickLogic();
                     break;
 
                 default:
-                    var funHandlerTest = new EastMoneyFundHandler(apiDataExtractor);
+                    var funHandlerTest = new EastMoneyFundHandler(apiDataExtractor, _fundApiSource);
                     var TestFundSearcher = new FundInfoSearcher<EastMoneyFundBasicInfo>(funHandlerTest, this);
                     TestFundSearcher.SearchButtonClickLogic();
                     break;

@@ -2,6 +2,8 @@
 using FundBasicInfoNavigator.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -76,7 +78,8 @@ namespace FundBasicInfoNavigator.Services
             }
 
             Task.WaitAll(taskList.ToArray());
-            RefreshDataGrid(_fundHandler.ResultList.Cast<IFundBasicInfo>().ToList());
+
+            RefreshDataTable();
 
             var logMessage = _fundHandler.LogList;
             logMessage.Add("Finish searching process.");
@@ -109,9 +112,30 @@ namespace FundBasicInfoNavigator.Services
             return stringSource.Split(',').Select(x => x.Trim()).Distinct().ToList();
         }
 
-        private void RefreshDataGrid(List<IFundBasicInfo> targetList)
+        private void RefreshDataTable()
         {
-            targetList.ForEach(x => ViewModel.Fund.Add(x));
+            ViewModel.DataView = ConvertAsDataTable(_fundHandler.ResultList);
+        }
+
+        public DataTable ConvertAsDataTable(List<T> sourceList)
+        {
+            var properties = TypeDescriptor.GetProperties(typeof(T));
+            var resultTable = new DataTable();
+            foreach (PropertyDescriptor prop in properties)
+            {
+                resultTable.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+            }
+
+            foreach (T item in sourceList)
+            {
+                var row = resultTable.NewRow();
+                foreach (PropertyDescriptor prop in properties)
+                {
+                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                }
+                resultTable.Rows.Add(row);
+            }
+            return resultTable;
         }
 
         private void ExportResult(List<T> listResult)
@@ -129,5 +153,6 @@ namespace FundBasicInfoNavigator.Services
                 exportHandler.ExportAsExcel(ViewModel.ExportDataPath, exportFileName, listResult);
             }
         }
+
     }
 }
