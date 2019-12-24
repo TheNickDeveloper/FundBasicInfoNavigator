@@ -11,10 +11,10 @@ WPF project by applyig bond API for indicating the fund real time basic informat
 ![image](https://github.com/TheNickDeveloper/FundBasicInfoNavigator/blob/master/image/ApplicationUI.png)
 
 ## How to Use
-1. Select Input Option
-  -1.1 Manual Search
+### Select Input Option
+  #### Manual Search
     Input fund code in the search box. Tf there are more then two funds, seperate them by putting comma mark(e.g. 1,2,3,...).
-  -1.2 Import CSV file
+  #### Import CSV file
     Press Browse button, and select the source file as intput file.
     
 2. Select Export Option
