@@ -12,10 +12,10 @@ WPF project by applyig bond API for indicating the fund real time basic informat
 
 ## How to Use
 ### Select Input Option
-  #### Manual Search
-    Input fund code in the search box. Tf there are more then two funds, seperate them by putting comma mark(e.g. 1,2,3,...).
-  #### Import CSV file
-    Press Browse button, and select the source file as intput file.
+1. Manual Search
+...Input fund code in the search box. Tf there are more then two funds, seperate them by putting comma mark(e.g. 1,2,3,...).
+2. Import CSV file
+...Press Browse button, and select the source file as intput file.
     
 2. Select Export Option
   -2.1 Display Only
